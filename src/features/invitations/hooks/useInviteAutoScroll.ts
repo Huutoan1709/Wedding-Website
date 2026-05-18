@@ -17,6 +17,7 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
   const timerRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
   const hasStartedRef = useRef(false);
+  const programmaticScrollRef = useRef(false);
 
   const stop = useCallback(() => {
     if (timerRef.current !== null) {
@@ -64,6 +65,24 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
   }, [stop]);
 
   useEffect(() => {
+    if (!enabled) return;
+
+    const pauseFromUserIntent = () => {
+      if (!programmaticScrollRef.current && !blocked && !externallyBlocked) {
+        setPaused(true);
+      }
+    };
+
+    window.addEventListener("touchmove", pauseFromUserIntent, { passive: true });
+    window.addEventListener("wheel", pauseFromUserIntent, { passive: true });
+
+    return () => {
+      window.removeEventListener("touchmove", pauseFromUserIntent);
+      window.removeEventListener("wheel", pauseFromUserIntent);
+    };
+  }, [blocked, enabled, externallyBlocked]);
+
+  useEffect(() => {
     const shouldRun = enabled && !paused && !blocked && !externallyBlocked && !document.hidden;
 
     if (!shouldRun) {
@@ -73,9 +92,10 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
 
     const scrollStep = (time: number) => {
       const scrollingElement = document.scrollingElement || document.documentElement;
-      const bottom = scrollingElement.scrollHeight - scrollingElement.clientHeight;
+      const bottom = scrollingElement.scrollHeight - window.innerHeight;
+      const currentTop = window.scrollY || window.pageYOffset || scrollingElement.scrollTop;
 
-      if (scrollingElement.scrollTop >= bottom - 2) {
+      if (currentTop >= bottom - 2) {
         setPaused(true);
         stop();
         return;
@@ -87,7 +107,14 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
 
       const delta = time - lastTimeRef.current;
       lastTimeRef.current = time;
-      scrollingElement.scrollTop = Math.min(bottom, scrollingElement.scrollTop + delta * speed);
+      const nextTop = Math.min(bottom, currentTop + delta * speed);
+
+      programmaticScrollRef.current = true;
+      window.scrollTo(0, nextTop);
+      window.setTimeout(() => {
+        programmaticScrollRef.current = false;
+      }, 0);
+
       frameRef.current = window.requestAnimationFrame(scrollStep);
     };
 

@@ -114,7 +114,7 @@ function TemplateMiniPreview({ isActive, template }: TemplateMiniPreviewProps) {
     <div className="relative h-full overflow-hidden rounded-[20px] bg-[#15151f] md:rounded-[22px]">
       <iframe
         aria-label={`Xem trước mẫu ${template.name}`}
-        className="pointer-events-none h-[1100px] w-[430px] origin-top-left scale-[0.465] border-0 md:scale-[0.526]"
+        className="pointer-events-none absolute left-1/2 top-0 h-[1100px] w-[430px] origin-top -translate-x-1/2 scale-[0.465] border-0 md:scale-[0.526]"
         onLoad={() => {
           if (isActive) {
             startAutoScroll();
