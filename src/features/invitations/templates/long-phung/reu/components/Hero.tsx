@@ -50,7 +50,7 @@ function PortraitBlock({ person, role }: PortraitBlockProps) {
 export function LongPhungReuHero({ invitation }: LongPhungReuHeroProps) {
   return (
     <section className="relative w-full overflow-hidden bg-[var(--lp-cream)] text-[var(--lp-surface)]">
-      <div className="relative h-8 overflow-hidden bg-[var(--lp-surface)]">
+      <div className="relative h-12 overflow-hidden bg-[var(--lp-surface)]">
         <div className="absolute inset-0 opacity-45" style={dragonPatternStyle} />
       </div>
 

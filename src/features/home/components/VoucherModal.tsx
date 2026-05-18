@@ -17,58 +17,41 @@ export function VoucherModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-[#15151f]/45 px-4 backdrop-blur-sm">
-      <div className="relative w-full max-w-[520px] overflow-hidden rounded-[32px] border border-white/70 bg-white p-6 text-[#15151f] shadow-[0_34px_90px_rgba(21,21,31,0.28)]">
-        <div className="absolute -right-16 -top-16 size-44 rounded-full bg-[#ff4f8b]/16 blur-2xl" />
-        <div className="absolute -bottom-20 -left-16 size-52 rounded-full bg-[#4e77ff]/14 blur-2xl" />
+    <div className="fixed inset-0 z-50 grid place-items-center bg-[#15151f]/45 px-4 py-4 backdrop-blur-sm">
+      <div className="relative max-h-[calc(100svh-32px)] w-full max-w-[420px] overflow-y-auto rounded-[24px] border border-white/70 bg-white p-4 text-[#15151f] shadow-[0_28px_72px_rgba(21,21,31,0.24)] sm:p-5">
+        <div className="absolute -right-14 -top-14 size-36 rounded-full bg-[#ff4f8b]/14 blur-2xl" />
+        <div className="absolute -bottom-16 -left-14 size-40 rounded-full bg-[#4e77ff]/12 blur-2xl" />
         <button
-          className="absolute right-5 top-5 z-10 grid size-9 place-items-center rounded-full bg-[#f3f4f8] text-[#60647a] transition hover:bg-[#e7e9f2]"
+          className="absolute right-4 top-4 z-10 grid size-8 place-items-center rounded-full bg-[#f3f4f8] text-[#60647a] transition hover:bg-[#e7e9f2]"
           onClick={() => setOpen(false)}
           type="button"
           aria-label="Đóng voucher"
         >
-          <X size={18} />
+          <X size={16} />
         </button>
 
         <div className="relative">
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#fff0f6] px-4 py-2 text-sm font-black uppercase tracking-[0.14em] text-[#ff4f8b]">
-            <Sparkles size={16} />
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#fff0f6] px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.1em] text-[#ff4f8b]">
+            <Sparkles size={14} />
             Ưu đãi trong ngày
           </div>
-          <div className="mt-7 grid gap-5 sm:grid-cols-[120px_1fr] sm:items-center">
-            <div className="grid aspect-square place-items-center rounded-[30px] bg-[#15151f] text-white shadow-[0_18px_44px_rgba(21,21,31,0.22)]">
-              <Gift className="mb-2 text-[#ffb8d1]" size={34} />
-              <span className="text-4xl font-black">50%</span>
+          <div className="mt-5 grid gap-4 sm:grid-cols-[92px_1fr] sm:items-center">
+            <div className="flex items-center justify-center gap-2 rounded-[20px] bg-[#15151f] px-4 py-3 text-white shadow-[0_14px_34px_rgba(21,21,31,0.2)] sm:grid sm:aspect-square sm:gap-0 sm:px-0 sm:py-0">
+              <Gift className="text-[#ffb8d1] sm:mb-1" size={24} />
+              <span className="text-3xl font-black">50%</span>
             </div>
             <div>
-              <h2 className="text-3xl font-black leading-tight tracking-[-0.03em] sm:text-4xl">
+              <h2 className="text-xl font-black leading-tight tracking-[-0.03em] sm:text-2xl">
                 Giảm 50% khi làm thiệp cho cả nhà trai và nhà gái
               </h2>
-              <p className="mt-3 text-[15px] leading-7 text-[#60647a]">
+              <p className="mt-2 text-sm leading-6 text-[#60647a]">
                 Phù hợp khi cần 2 link thiệp riêng, nội dung riêng cho từng bên nhưng vẫn đồng bộ phong cách và album cưới.
               </p>
             </div>
           </div>
 
-          <div className="mt-7 rounded-2xl border border-[#e8eaf5] bg-[#f7f8ff] p-4 text-sm leading-6 text-[#3c4054]">
+          <div className="mt-4 rounded-2xl border border-[#e8eaf5] bg-[#f7f8ff] p-3.5 text-sm leading-6 text-[#3c4054]">
             Chỉ cần gửi thông tin qua Zalo/Facebook/Instagram, bên mình hỗ trợ chỉnh nội dung A-Z và bàn giao link để chia sẻ khách mời.
-          </div>
-
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <a
-              className="inline-flex h-12 flex-1 items-center justify-center rounded-full bg-[#ff4f8b] px-5 text-sm font-black text-white shadow-[0_16px_34px_rgba(255,79,139,0.28)]"
-              href="#templates"
-              onClick={() => setOpen(false)}
-            >
-              Xem mẫu thiệp
-            </a>
-            <button
-              className="inline-flex h-12 flex-1 items-center justify-center rounded-full border border-[#dfe2ef] bg-white px-5 text-sm font-black text-[#15151f]"
-              onClick={() => setOpen(false)}
-              type="button"
-            >
-              Để sau
-            </button>
           </div>
         </div>
       </div>

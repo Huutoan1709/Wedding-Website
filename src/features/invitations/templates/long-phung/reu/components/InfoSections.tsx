@@ -127,9 +127,10 @@ function CountdownCalendarBlock({ startsAt }: { startsAt: string }) {
       <CountdownTimer
         startsAt={startsAt}
         labels={{ days: "Ngày", hours: "Giờ", minutes: "Phút", seconds: "Giây" }}
+        splitDigits={false}
         className="mt-5 gap-2"
         itemClassName="min-w-0"
-        valueClassName="max-w-none rounded-[6px] border-[var(--lp-surface)]/25 bg-[var(--lp-surface)] text-[18px] font-semibold text-[var(--lp-text)] shadow-[0_8px_18px_rgba(16,42,20,0.14)] sm:text-[18px] md:text-[18px]"
+        valueClassName="h-12 max-w-none rounded-[6px] border-[var(--lp-surface)]/25 bg-[var(--lp-surface)] px-2 text-[18px] font-semibold text-[var(--lp-text)] shadow-[0_8px_18px_rgba(16,42,20,0.14)] sm:text-[18px] md:text-[18px]"
         labelClassName="text-[10px] font-semibold text-[#5f6458] sm:text-[10px]"
       />
       <WeddingCalendarCard startsAt={startsAt} />

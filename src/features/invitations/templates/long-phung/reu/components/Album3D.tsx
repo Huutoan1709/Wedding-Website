@@ -31,6 +31,7 @@ export function LongPhungReuAlbum3D({ photos }: LongPhungReuAlbum3DProps) {
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
   const [motion, setMotion] = useState<Direction | null>(null);
   const touchStartX = useRef<number | null>(null);
+  const previewTouchStartX = useRef<number | null>(null);
   const visiblePhotos = getVisiblePhotos(album, activeIndex);
 
   const move = useCallback(
@@ -68,6 +69,8 @@ export function LongPhungReuAlbum3D({ photos }: LongPhungReuAlbum3DProps) {
   useEffect(() => {
     if (previewIndex === null) return;
 
+    window.dispatchEvent(new Event("invite:auto-scroll-block"));
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setPreviewIndex(null);
@@ -81,7 +84,10 @@ export function LongPhungReuAlbum3D({ photos }: LongPhungReuAlbum3DProps) {
     };
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.dispatchEvent(new Event("invite:auto-scroll-unblock"));
+    };
   }, [movePreview, previewIndex]);
 
   if (!album.length) {
@@ -106,15 +112,6 @@ export function LongPhungReuAlbum3D({ photos }: LongPhungReuAlbum3DProps) {
             touchStartX.current = event.touches[0].clientX;
           }}
         >
-          <button
-            aria-label="Ảnh trước"
-            className="absolute left-0 top-1/2 z-20 grid size-9 -translate-x-2 -translate-y-1/2 place-items-center rounded-full bg-[var(--lp-surface)]/82 text-[var(--lp-text)] shadow-[var(--lp-shadow)] transition hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--lp-surface)]"
-            onClick={() => move("prev")}
-            type="button"
-          >
-            <ChevronLeft className="size-5" />
-          </button>
-
           <div
             className={cn(
               "green-album-3d-stage green-album-3d-soft mx-auto grid h-[250px] grid-cols-[0.86fr_1.08fr_0.86fr] items-center gap-3",
@@ -146,15 +143,6 @@ export function LongPhungReuAlbum3D({ photos }: LongPhungReuAlbum3DProps) {
               </button>
             ))}
           </div>
-
-          <button
-            aria-label="Ảnh tiếp theo"
-            className="absolute right-0 top-1/2 z-20 grid size-9 -translate-y-1/2 translate-x-2 place-items-center rounded-full bg-[var(--lp-surface)]/82 text-[var(--lp-text)] shadow-[var(--lp-shadow)] transition hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--lp-surface)]"
-            onClick={() => move("next")}
-            type="button"
-          >
-            <ChevronRight className="size-5" />
-          </button>
         </div>
 
         <div className="mt-4 flex justify-center gap-2">
@@ -173,7 +161,19 @@ export function LongPhungReuAlbum3D({ photos }: LongPhungReuAlbum3DProps) {
       {previewIndex !== null && (
         <div className="fixed inset-0 z-[80] grid place-items-center bg-black/82 px-4 py-5" role="dialog" aria-modal="true" aria-label="Xem ảnh cưới">
           <button aria-label="Đóng ảnh" className="absolute inset-0 cursor-default" onClick={() => setPreviewIndex(null)} type="button" />
-          <div className="relative z-10 flex max-h-[calc(100svh-40px)] w-full max-w-[390px] items-center justify-center rounded-[8px] border border-[var(--lp-line)] bg-[var(--lp-surface)] p-2 shadow-[var(--lp-shadow)]">
+          <div
+            className="relative z-10 flex max-h-[calc(100svh-40px)] w-full max-w-[390px] items-center justify-center rounded-[8px] border border-[var(--lp-line)] bg-[var(--lp-surface)] p-2 shadow-[var(--lp-shadow)]"
+            onTouchEnd={(event) => {
+              if (previewTouchStartX.current === null) return;
+              const delta = event.changedTouches[0].clientX - previewTouchStartX.current;
+              previewTouchStartX.current = null;
+              if (Math.abs(delta) < 36) return;
+              movePreview(delta < 0 ? "next" : "prev");
+            }}
+            onTouchStart={(event) => {
+              previewTouchStartX.current = event.touches[0].clientX;
+            }}
+          >
             <button
               aria-label="Đóng"
               className="absolute right-3 top-3 z-20 grid size-9 place-items-center rounded-full bg-black/55 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
@@ -185,7 +185,7 @@ export function LongPhungReuAlbum3D({ photos }: LongPhungReuAlbum3DProps) {
 
             <button
               aria-label="Ảnh trước"
-              className="absolute left-3 top-1/2 z-20 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-black/55 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="absolute left-3 top-1/2 z-20 hidden size-10 -translate-y-1/2 place-items-center rounded-full bg-black/55 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white md:grid"
               onClick={() => movePreview("prev")}
               type="button"
             >
@@ -203,7 +203,7 @@ export function LongPhungReuAlbum3D({ photos }: LongPhungReuAlbum3DProps) {
 
             <button
               aria-label="Ảnh tiếp theo"
-              className="absolute right-3 top-1/2 z-20 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-black/55 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              className="absolute right-3 top-1/2 z-20 hidden size-10 -translate-y-1/2 place-items-center rounded-full bg-black/55 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white md:grid"
               onClick={() => movePreview("next")}
               type="button"
             >

@@ -1,6 +1,8 @@
-# songhy
+# Thiệp đôi ta
 
-Next.js app for selling online wedding invitation templates under the songhy brand.
+Next.js app for selling online wedding invitation templates under the Thiệp đôi ta brand.
+
+Production domain: https://thiepdoita.com
 
 ## Stack
 

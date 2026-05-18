@@ -14,6 +14,7 @@ type CountdownTimerProps = {
   startsAt: string;
   labels?: CountdownLabels;
   padValues?: boolean;
+  splitDigits?: boolean;
   className?: string;
   itemClassName?: string;
   valueClassName?: string;
@@ -48,6 +49,7 @@ export function CountdownTimer({
   startsAt,
   labels = defaultLabels,
   padValues = true,
+  splitDigits = true,
   className,
   itemClassName,
   valueClassName,
@@ -66,7 +68,7 @@ export function CountdownTimer({
       {items.map(([label, value]) => (
         <div className={cn("min-w-0", itemClassName)} key={label}>
           <div className="flex min-w-0 justify-center gap-1 sm:gap-1.5">
-            {(padValues ? String(value).padStart(2, "0") : String(value)).split("").map((digit, index) => (
+            {(splitDigits ? (padValues ? String(value).padStart(2, "0") : String(value)).split("") : [padValues ? String(value).padStart(2, "0") : String(value)]).map((digit, index) => (
               <span
                 className={cn(
                   "grid aspect-square min-w-0 flex-1 max-w-10 place-items-center rounded-[6px] border border-[color-mix(in_srgb,var(--invite-primary),white_58%)] bg-[color-mix(in_srgb,var(--invite-surface),white_8%)] text-xl font-bold leading-none text-[var(--invite-primary)] shadow-[0_8px_22px_rgba(0,0,0,0.08)] sm:text-2xl md:max-w-12 md:text-3xl",

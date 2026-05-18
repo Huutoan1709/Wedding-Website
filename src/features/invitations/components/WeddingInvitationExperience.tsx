@@ -6,8 +6,9 @@ import { renderInvitationTemplate } from "@/features/invitations/templates/regis
 type Props = {
   invitation: WeddingInvitationTemplate;
   autoOpen?: boolean;
+  autoScroll?: boolean;
 };
 
-export function WeddingInvitationExperience({ invitation, autoOpen = false }: Props) {
-  return renderInvitationTemplate({ autoOpen, invitation });
+export function WeddingInvitationExperience({ invitation, autoOpen = false, autoScroll = true }: Props) {
+  return renderInvitationTemplate({ autoOpen, autoScroll, invitation });
 }

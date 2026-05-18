@@ -11,6 +11,6 @@ export const invitationTemplateRegistry = {
   "long-phung-reu": "LongPhungReuExperience"
 } as const;
 
-export function renderInvitationTemplate({ invitation, autoOpen = false }: InvitationTemplateProps) {
-  return <LongPhungReuExperience autoOpen={autoOpen} invitation={invitation} />;
+export function renderInvitationTemplate({ invitation, autoOpen = false, autoScroll = true }: InvitationTemplateProps) {
+  return <LongPhungReuExperience autoOpen={autoOpen} autoScroll={autoScroll} invitation={invitation} />;
 }

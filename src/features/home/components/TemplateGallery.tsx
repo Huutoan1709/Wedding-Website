@@ -1,9 +1,8 @@
-﻿"use client";
+"use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight, Palette } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { WeddingTemplate } from "@/types/wedding";
 import { cn } from "@/lib/utils";
 
@@ -11,13 +10,127 @@ type TemplateGalleryProps = {
   templates: WeddingTemplate[];
 };
 
-type SlidePosition = {
-  className: string;
-  transform: string;
-  zIndex: number;
+type TemplateMiniPreviewProps = {
+  isActive: boolean;
+  template: WeddingTemplate;
 };
 
-const slidePositions: Record<number, SlidePosition> = {
+function wrapIndex(index: number, length: number) {
+  return ((index % length) + length) % length;
+}
+
+function getCircularOffset(index: number, activeIndex: number, length: number) {
+  const forward = wrapIndex(index - activeIndex, length);
+  return forward > length / 2 ? forward - length : forward;
+}
+
+function getPreviewPath(template: WeddingTemplate) {
+  if (!template.demoPath) {
+    return "#";
+  }
+
+  return `${template.demoPath}?preview=1`;
+}
+
+const previewScrollSpeed = 1.15;
+
+function TemplateMiniPreview({ isActive, template }: TemplateMiniPreviewProps) {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const frameRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number | null>(null);
+  const resetTimerRef = useRef<number | null>(null);
+
+  const stopAutoScroll = useCallback(() => {
+    if (frameRef.current) {
+      window.cancelAnimationFrame(frameRef.current);
+      frameRef.current = null;
+    }
+
+    if (resetTimerRef.current) {
+      window.clearTimeout(resetTimerRef.current);
+      resetTimerRef.current = null;
+    }
+
+    lastTimeRef.current = null;
+  }, []);
+
+  const resetPreview = useCallback(() => {
+    stopAutoScroll();
+    try {
+      iframeRef.current?.contentWindow?.scrollTo({ top: 0, behavior: "auto" });
+    } catch {
+      // Same-origin previews are scrollable; ignore if the browser blocks access.
+    }
+  }, [stopAutoScroll]);
+
+  const startAutoScroll = useCallback(() => {
+    stopAutoScroll();
+
+    const step = (time: number) => {
+      const win = iframeRef.current?.contentWindow;
+      if (!win) return;
+
+      try {
+        const doc = win.document;
+        const scroller = doc.scrollingElement || doc.documentElement;
+        const maxScroll = scroller.scrollHeight - scroller.clientHeight;
+
+        if (scroller.scrollTop >= maxScroll - 4) {
+          resetTimerRef.current = window.setTimeout(() => {
+            win.scrollTo({ top: 0, behavior: "auto" });
+            lastTimeRef.current = null;
+            frameRef.current = window.requestAnimationFrame(step);
+          }, 350);
+          return;
+        }
+
+        if (lastTimeRef.current === null) {
+          lastTimeRef.current = time;
+        }
+
+        const delta = time - lastTimeRef.current;
+        lastTimeRef.current = time;
+        scroller.scrollTop = Math.min(maxScroll, scroller.scrollTop + delta * previewScrollSpeed);
+        frameRef.current = window.requestAnimationFrame(step);
+      } catch {
+        stopAutoScroll();
+      }
+    };
+
+    frameRef.current = window.requestAnimationFrame(step);
+  }, [stopAutoScroll]);
+
+  useEffect(() => {
+    if (isActive) {
+      startAutoScroll();
+    } else {
+      resetPreview();
+    }
+
+    return stopAutoScroll;
+  }, [isActive, resetPreview, startAutoScroll, stopAutoScroll]);
+
+  return (
+    <div className="relative h-full overflow-hidden rounded-[20px] bg-[#15151f] md:rounded-[22px]">
+      <iframe
+        aria-label={`Xem trước mẫu ${template.name}`}
+        className="pointer-events-none h-[1100px] w-[430px] origin-top-left scale-[0.465] border-0 md:scale-[0.526]"
+        onLoad={() => {
+          if (isActive) {
+            startAutoScroll();
+          }
+        }}
+        ref={iframeRef}
+        src={getPreviewPath(template)}
+        tabIndex={-1}
+        title={`Xem trước ${template.name}`}
+      />
+      <div className="pointer-events-none absolute inset-0 rounded-[20px] ring-1 ring-inset ring-white/10 md:rounded-[22px]" />
+    </div>
+  );
+}
+
+const slidePositions = {
   [-2]: {
     className: "opacity-35 blur-[0.4px]",
     transform: "translateX(-330px) translateZ(-150px) rotateY(42deg) rotateZ(-4deg) scale(0.78)",
@@ -45,20 +158,11 @@ const slidePositions: Record<number, SlidePosition> = {
   }
 };
 
-const hiddenPosition: SlidePosition = {
+const hiddenPosition = {
   className: "pointer-events-none opacity-0 blur-sm",
   transform: "translateX(0) translateZ(-260px) rotateY(0deg) scale(0.68)",
   zIndex: 0
 };
-
-function wrapIndex(index: number, length: number) {
-  return ((index % length) + length) % length;
-}
-
-function getCircularOffset(index: number, activeIndex: number, length: number) {
-  const forward = wrapIndex(index - activeIndex, length);
-  return forward > length / 2 ? forward - length : forward;
-}
 
 export function TemplateGallery({ templates }: TemplateGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -71,16 +175,20 @@ export function TemplateGallery({ templates }: TemplateGalleryProps) {
     return () => window.clearInterval(timer);
   }, [templates.length]);
 
-  const activeTemplate = templates[activeIndex];
-
   return (
     <section className="overflow-hidden bg-[#f5f6fb]" id="templates">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
-          <p className="mb-5 text-sm font-black uppercase tracking-[0.22em] text-[#ff4f8b]">Kho mẫu 3D</p>
-          <h2 className="text-4xl font-black leading-[1.08] tracking-[-0.03em] text-[#15151f] sm:text-5xl lg:text-[56px]">
+          <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 text-xs font-black uppercase tracking-[0.14em] text-[#ff4f8b] shadow-[0_12px_30px_rgba(44,53,95,0.08)] sm:mb-5 sm:px-4 sm:text-sm sm:tracking-[0.16em]">
+            <Palette size={16} />
+            Kho mẫu 3D
+          </p>
+          <h2 className="text-3xl font-black leading-[1.08] tracking-[-0.03em] text-[#15151f] min-[390px]:text-4xl sm:text-5xl lg:text-[56px]">
             Showroom thiệp cưới online
           </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#60647a] sm:mt-5 sm:text-lg sm:leading-8">
+            Mỗi mẫu được thiết kế như một trải nghiệm hoàn chỉnh, có thể thay tên, ảnh, lịch trình, bản đồ và nội dung theo từng cặp đôi.
+          </p>
         </div>
 
         <div className="relative mx-auto mt-4 hidden h-[560px] max-w-6xl items-center justify-center md:flex [perspective:1500px]">
@@ -105,7 +213,7 @@ export function TemplateGallery({ templates }: TemplateGalleryProps) {
 
           {templates.map((template, index) => {
             const offset = getCircularOffset(index, activeIndex, templates.length);
-            const position = slidePositions[offset] || hiddenPosition;
+            const position = slidePositions[offset as keyof typeof slidePositions] || hiddenPosition;
             const isActive = offset === 0;
 
             return (
@@ -124,14 +232,7 @@ export function TemplateGallery({ templates }: TemplateGalleryProps) {
                     "transform 1100ms cubic-bezier(0.22, 1, 0.36, 1), opacity 900ms ease, filter 900ms ease, width 900ms cubic-bezier(0.22, 1, 0.36, 1), height 900ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 900ms ease"
                 }}
               >
-                <div className="relative h-full overflow-hidden rounded-[22px] bg-[#15151f]">
-                  <Image alt={template.name} className="object-cover" fill sizes="226px" src={template.coverImage} />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(21,21,31,0.72))]" />
-                  <div className="absolute inset-x-4 bottom-4 rounded-2xl bg-white/88 p-4 text-center text-[#15151f] backdrop-blur-xl">
-                    <p className="text-xs font-black uppercase tracking-[0.16em] text-[#ff4f8b]">{template.estimatedDelivery}</p>
-                    <h3 className="mt-1 text-xl font-black">{template.name}</h3>
-                  </div>
-                </div>
+                <TemplateMiniPreview isActive={isActive} template={template} />
               </Link>
             );
           })}
@@ -149,10 +250,10 @@ export function TemplateGallery({ templates }: TemplateGalleryProps) {
           </div>
         </div>
 
-        <div className="relative mx-auto mt-10 h-[560px] max-w-[390px] overflow-hidden md:hidden">
-          <div className="absolute inset-x-6 top-20 h-72 rounded-full bg-[#ff4f8b]/10 blur-3xl" />
+        <div className="relative mx-auto mt-8 h-[500px] max-w-[360px] overflow-hidden md:hidden">
+          <div className="absolute inset-x-6 top-16 h-64 rounded-full bg-[#ff4f8b]/10 blur-3xl" />
           <button
-            className="absolute left-0 top-[220px] z-30 grid size-12 place-items-center rounded-full bg-white text-[#15151f] shadow-[0_14px_32px_rgba(44,53,95,0.16)]"
+            className="absolute left-0 top-[190px] z-30 grid size-11 place-items-center rounded-full bg-white text-[#15151f] shadow-[0_14px_32px_rgba(44,53,95,0.16)]"
             onClick={() => setActiveIndex((current) => wrapIndex(current - 1, templates.length))}
             type="button"
             aria-label="Mẫu trước"
@@ -160,7 +261,7 @@ export function TemplateGallery({ templates }: TemplateGalleryProps) {
             <ChevronLeft size={22} />
           </button>
           <button
-            className="absolute right-0 top-[220px] z-30 grid size-12 place-items-center rounded-full bg-white text-[#15151f] shadow-[0_14px_32px_rgba(44,53,95,0.16)]"
+            className="absolute right-0 top-[190px] z-30 grid size-11 place-items-center rounded-full bg-white text-[#15151f] shadow-[0_14px_32px_rgba(44,53,95,0.16)]"
             onClick={() => setActiveIndex((current) => wrapIndex(current + 1, templates.length))}
             type="button"
             aria-label="Mẫu sau"
@@ -168,7 +269,7 @@ export function TemplateGallery({ templates }: TemplateGalleryProps) {
             <ChevronRight size={22} />
           </button>
 
-          <div className="absolute inset-x-0 top-0 h-[470px] [perspective:1000px]">
+          <div className="absolute inset-x-0 top-0 h-[420px] [perspective:1000px]">
             {templates.map((template, index) => {
               const offset = getCircularOffset(index, activeIndex, templates.length);
               const visible = Math.abs(offset) <= 1;
@@ -176,15 +277,15 @@ export function TemplateGallery({ templates }: TemplateGalleryProps) {
                 offset === 0
                   ? "translateX(0) translateZ(70px) rotateY(0deg) scale(1)"
                   : offset === -1
-                    ? "translateX(-108px) translateZ(-80px) rotateY(30deg) scale(0.78)"
+                    ? "translateX(-92px) translateZ(-80px) rotateY(30deg) scale(0.78)"
                     : offset === 1
-                      ? "translateX(108px) translateZ(-80px) rotateY(-30deg) scale(0.78)"
+                      ? "translateX(92px) translateZ(-80px) rotateY(-30deg) scale(0.78)"
                       : "translateX(0) translateZ(-220px) scale(0.58)";
 
               return (
                 <Link
                   className={cn(
-                    "absolute left-1/2 top-5 h-[420px] w-[220px] rounded-[30px] border border-white/80 bg-white/60 p-2 shadow-[0_24px_70px_rgba(44,53,95,0.16)] backdrop-blur-xl [transform-style:preserve-3d]",
+                    "absolute left-1/2 top-4 h-[380px] w-[200px] rounded-[28px] border border-white/80 bg-white/60 p-2 shadow-[0_24px_70px_rgba(44,53,95,0.16)] backdrop-blur-xl [transform-style:preserve-3d]",
                     visible ? "opacity-100" : "pointer-events-none opacity-0",
                     offset !== 0 && "opacity-55"
                   )}
@@ -193,24 +294,16 @@ export function TemplateGallery({ templates }: TemplateGalleryProps) {
                   style={{
                     transform: `translateX(-50%) ${transform}`,
                     zIndex: offset === 0 ? 10 : 3,
-                    transition:
-                      "transform 900ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms ease, box-shadow 700ms ease"
+                    transition: "transform 900ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms ease, box-shadow 700ms ease"
                   }}
                 >
-                  <div className="relative h-full overflow-hidden rounded-[22px] bg-[#15151f]">
-                    <Image alt={template.name} className="object-cover" fill sizes="220px" src={template.coverImage} />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(21,21,31,0.74))]" />
-                    <div className="absolute inset-x-4 bottom-4 rounded-2xl bg-white/90 p-4 text-center text-[#15151f] backdrop-blur-xl">
-                      <p className="text-xs font-black uppercase tracking-[0.16em] text-[#ff4f8b]">{template.estimatedDelivery}</p>
-                      <h3 className="mt-1 text-xl font-black">{template.name}</h3>
-                    </div>
-                  </div>
+                  <TemplateMiniPreview isActive={offset === 0} template={template} />
                 </Link>
               );
             })}
           </div>
 
-          <div className="absolute bottom-12 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2">
+          <div className="absolute bottom-16 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2">
             {templates.map((template, index) => (
               <button
                 className={cn("h-2.5 rounded-full bg-[#15151f]/18 transition-all duration-500", index === activeIndex ? "w-8 bg-[#ff4f8b]" : "w-2.5")}
@@ -221,19 +314,7 @@ export function TemplateGallery({ templates }: TemplateGalleryProps) {
               />
             ))}
           </div>
-
-          {activeTemplate && (
-            <p className="absolute bottom-0 left-0 right-0 text-center text-sm font-bold text-[#60647a]">
-              Đang xem: <span className="text-[#15151f]">{activeTemplate.name}</span>
-            </p>
-          )}
         </div>
-
-        {activeTemplate && (
-          <p className="mt-2 hidden text-center text-sm font-bold text-[#60647a] md:block">
-            Đang xem: <span className="text-[#15151f]">{activeTemplate.name}</span>
-          </p>
-        )}
       </div>
     </section>
   );

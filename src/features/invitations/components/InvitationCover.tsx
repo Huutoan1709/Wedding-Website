@@ -11,6 +11,12 @@ type InvitationCoverProps = {
   onOpen: () => void;
 };
 
+const longPhungCoverPatternStyle = {
+  backgroundImage: 'url("/images/invitation/double-dragon.webp")',
+  backgroundPosition: "top center",
+  backgroundSize: "360px"
+};
+
 function formatCoverDate(startsAt: string) {
   return new Intl.DateTimeFormat("vi-VN", {
     day: "2-digit",
@@ -24,7 +30,8 @@ export function GreenInviteCover({ invitation, open, onOpen }: InvitationCoverPr
   const coverDate = formatCoverDate(invitation.event.startsAt);
 
   return (
-    <section className={cn("invite-cover-stage fixed inset-0 z-50 grid h-[100svh] place-items-center overflow-hidden bg-white px-4 py-6 text-[#e8d19a]", open && "invite-cover-stage-open")}>
+    <section className={cn("invite-cover-stage fixed inset-0 z-50 grid h-[100svh] place-items-center overflow-hidden bg-[#f2eddb] px-4 py-6 text-[#e8d19a]", open && "invite-cover-stage-open")}>
+      <div className="absolute inset-0 opacity-[0.08] mix-blend-multiply" style={longPhungCoverPatternStyle} />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(16,42,20,0.08),transparent_34%)]" />
       <FallingDecorations tone="green" />
       <div className="invite-floating-hy absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-[13rem] font-black leading-none text-[#102a14]/[0.035]">

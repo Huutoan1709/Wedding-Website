@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
@@ -100,7 +100,7 @@ export function DefaultWeddingInvitationExperience({ invitation, autoOpen = fals
         className={cn("mx-auto w-full max-w-[430px] overflow-hidden bg-white transition-opacity duration-700 md:max-w-[900px]", open ? "opacity-100" : "opacity-70")}
         enabled={open && !coverVisible}
         restartKey={`${open}-${coverVisible}`}
-        speed={0.055}
+        speed={0.14}
         startDelay={350}
       >
         <div data-invite-step>

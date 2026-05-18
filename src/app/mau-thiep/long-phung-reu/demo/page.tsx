@@ -7,6 +7,16 @@ export const metadata: Metadata = {
   description: "Demo Long Phụng - Rêu online."
 };
 
-export default function LongPhungReuDemoPage() {
-  return <LongPhungReuInvitation invitation={longPhungReuInvitation} />;
+type LongPhungReuDemoPageProps = {
+  searchParams?: Promise<{
+    preview?: string;
+  }>;
+};
+
+export default async function LongPhungReuDemoPage({ searchParams }: LongPhungReuDemoPageProps) {
+  const params = await searchParams;
+  const autoOpen = params?.preview === "1";
+  const autoScroll = params?.preview !== "1";
+
+  return <LongPhungReuInvitation autoOpen={autoOpen} autoScroll={autoScroll} invitation={longPhungReuInvitation} />;
 }

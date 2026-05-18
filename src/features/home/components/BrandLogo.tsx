@@ -1,5 +1,6 @@
-﻿import { Flower2 } from "lucide-react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 
 type BrandLogoProps = {
   className?: string;
@@ -16,34 +17,29 @@ export function BrandLogo({
   showTagline = true,
   variant = "light"
 }: BrandLogoProps) {
-  const isLight = variant === "light";
-
   return (
-    <span className={cn("inline-flex items-center gap-3", className)}>
+    <span className={cn("inline-flex items-center", className)}>
       <span
         className={cn(
-          "relative grid size-10 place-items-center rounded-md",
-          isLight
-            ? "bg-[linear-gradient(135deg,#ff0a6c,#d90032)] text-white shadow-[0_10px_24px_rgba(248,0,100,0.28)]"
-            : "bg-[linear-gradient(135deg,#ff0a6c,#d90032)] text-white shadow-[0_10px_24px_rgba(248,0,100,0.28)]",
+          "relative block h-12 w-[106px] overflow-hidden rounded-md sm:h-14 sm:w-[122px]",
+          variant === "light" ? "shadow-[0_10px_28px_rgba(0,0,0,0.16)]" : "shadow-[0_10px_26px_rgba(44,53,95,0.12)]",
           iconClassName
         )}
-        aria-hidden="true"
       >
-        <Flower2 size={20} />
-        <span className="absolute left-2 top-2 size-2 rounded-full bg-white/80" />
-        <span className="absolute right-2 top-3 size-2 rounded-full bg-[#ffe4ad]" />
-        <span className="absolute bottom-2 h-3 w-px rotate-[-28deg] bg-current opacity-70" />
-        <span className="absolute bottom-2 h-3 w-px rotate-[28deg] bg-current opacity-70" />
+        <Image
+          alt={siteConfig.displayName}
+          className="object-cover"
+          fill
+          priority
+          sizes="(max-width: 640px) 106px, 122px"
+          src="/images/brand/thiepdoita-logo.png"
+        />
       </span>
-      <span className={cn("leading-tight", textClassName)}>
-        <span className="block text-lg font-black tracking-[-0.02em]">songhy</span>
-        {showTagline ? (
-          <span className={cn("block text-xs font-medium", isLight ? "text-black/52" : "text-[var(--muted)]")}>
-            Thiệp cưới online Song Hỷ
-          </span>
-        ) : null}
-      </span>
+      {showTagline ? (
+        <span className={cn("sr-only", textClassName)}>
+          {siteConfig.displayName} - {siteConfig.tagline}
+        </span>
+      ) : null}
     </span>
   );
 }

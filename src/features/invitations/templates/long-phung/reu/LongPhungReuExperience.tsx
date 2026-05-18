@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
@@ -19,9 +19,16 @@ import { LongPhungReuScheduleSection } from "@/features/invitations/templates/lo
 type LongPhungReuExperienceProps = {
   invitation: WeddingInvitationTemplate;
   autoOpen?: boolean;
+  autoScroll?: boolean;
 };
 
-export function LongPhungReuExperience({ invitation, autoOpen = false }: LongPhungReuExperienceProps) {
+const outerPatternStyle = {
+  backgroundImage: 'url("/images/invitation/double-dragon.webp")',
+  backgroundPosition: "top center",
+  backgroundSize: "360px"
+};
+
+export function LongPhungReuExperience({ invitation, autoOpen = false, autoScroll = true }: LongPhungReuExperienceProps) {
   useResetScrollOnLoad();
 
   const [open, setOpen] = useState(autoOpen);
@@ -43,7 +50,7 @@ export function LongPhungReuExperience({ invitation, autoOpen = false }: LongPhu
     ...invitation.sections
   };
   const style = {
-    "--lp-bg": "#000000",
+    "--lp-bg": "#f2eddb",
     "--lp-surface": "#102a14",
     "--lp-panel": "#14341a",
     "--lp-cream": "#f2eddb",
@@ -103,16 +110,17 @@ export function LongPhungReuExperience({ invitation, autoOpen = false }: LongPhu
   }, [music]);
 
   return (
-    <div className="min-h-screen bg-[var(--lp-bg)] text-[var(--lp-text)]" style={style}>
+    <div className="relative min-h-screen overflow-hidden bg-white text-[var(--lp-text)]" style={style}>
+      <div className="pointer-events-none fixed inset-0 opacity-[0.08] mix-blend-multiply" style={outerPatternStyle} />
       <audio ref={audioRef} preload="auto" src={invitation.musicUrl || "/audio/cant-help-falling-in-love.mp3"} />
       {coverVisible && <GreenInviteCover invitation={invitation} open={open} onOpen={openInvitation} />}
       <InviteAutoScroll
         ref={contentRef}
         blocked={rsvpOpen}
-        className={cn("green-template-page mx-auto w-full max-w-[430px] overflow-hidden bg-[var(--lp-surface)] font-[family-name:var(--lp-font)] text-[18px] font-light leading-[27px] transition-opacity duration-700", open ? "opacity-100" : "opacity-70")}
-        enabled={open && !coverVisible}
+        className={cn("green-template-page relative z-10 mx-auto w-full max-w-[430px] overflow-hidden bg-[var(--lp-surface)] font-[family-name:var(--lp-font)] text-[18px] font-light leading-[27px] transition-opacity duration-700", open ? "opacity-100" : "opacity-70")}
+        enabled={autoScroll && open && !coverVisible}
         restartKey={`${open}-${coverVisible}`}
-        speed={0.055}
+        speed={0.14}
         startDelay={350}
       >
         {sections.hero && <LongPhungReuHero invitation={invitation} />}

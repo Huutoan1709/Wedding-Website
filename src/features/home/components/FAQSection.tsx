@@ -29,21 +29,24 @@ const faqs = [
 export function FAQSection() {
   return (
     <section className="bg-white" id="faq">
-      <div className="mx-auto max-w-5xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-black uppercase tracking-[0.22em] text-[#ff4f8b]">FAQ</p>
-          <h2 className="mt-3 text-4xl font-black leading-tight tracking-[-0.03em] text-[#15151f] sm:text-5xl">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-[#ff4f8b] sm:text-sm sm:tracking-[0.22em]">FAQ</p>
+          <h2 className="mt-3 text-3xl font-black leading-tight tracking-[-0.03em] text-[#15151f] min-[390px]:text-4xl sm:text-5xl">
             Những câu hỏi thường gặp
           </h2>
         </div>
-        <div className="mt-12 space-y-4">
+        <div className="mt-9 space-y-3 sm:mt-12 sm:space-y-4">
           {faqs.map((faq) => (
-            <details className="group rounded-[24px] border border-[#e8eaf5] bg-[#f7f8ff] p-6 shadow-[0_14px_34px_rgba(44,53,95,0.06)]" key={faq.question}>
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-5 text-lg font-black text-[#15151f]">
+            <details
+              className="group rounded-[20px] border border-[#e8eaf5] bg-[#f7f8ff] p-4 shadow-[0_14px_34px_rgba(44,53,95,0.06)] transition duration-300 open:bg-white open:shadow-[0_18px_46px_rgba(44,53,95,0.1)] sm:rounded-[22px] sm:p-6"
+              key={faq.question}
+            >
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-black leading-6 text-[#15151f] sm:gap-5 sm:text-lg">
                 {faq.question}
-                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white text-[#ff4f8b] transition group-open:rotate-45">+</span>
+                <span className="grid size-8 shrink-0 place-items-center rounded-full bg-white text-[#ff4f8b] transition group-open:rotate-45 group-open:bg-[#fff0f6] sm:size-9">+</span>
               </summary>
-              <p className="mt-4 max-w-3xl text-[15px] leading-7 text-[#60647a]">{faq.answer}</p>
+              <p className="mt-3 max-w-3xl text-[15px] leading-7 text-[#60647a] sm:mt-4">{faq.answer}</p>
             </details>
           ))}
         </div>
