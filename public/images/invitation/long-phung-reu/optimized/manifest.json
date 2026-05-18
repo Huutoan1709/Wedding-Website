@@ -1,0 +1,163 @@
+{
+  "/images/invitation/long-phung-reu/album-01.jpg": {
+    "src": "/images/invitation/long-phung-reu/album-01.jpg",
+    "width": 1080,
+    "height": 1619,
+    "format": "jpeg",
+    "variants": {
+      "thumb": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-01-thumb.webp",
+        "width": 480,
+        "height": 720
+      },
+      "medium": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-01-medium.webp",
+        "width": 900,
+        "height": 1349
+      },
+      "large": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-01-large.webp",
+        "width": 1080,
+        "height": 1619
+      }
+    }
+  },
+  "/images/invitation/long-phung-reu/album-02.jpg": {
+    "src": "/images/invitation/long-phung-reu/album-02.jpg",
+    "width": 1080,
+    "height": 1619,
+    "format": "jpeg",
+    "variants": {
+      "thumb": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-02-thumb.webp",
+        "width": 480,
+        "height": 720
+      },
+      "medium": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-02-medium.webp",
+        "width": 900,
+        "height": 1349
+      },
+      "large": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-02-large.webp",
+        "width": 1080,
+        "height": 1619
+      }
+    }
+  },
+  "/images/invitation/long-phung-reu/album-04.jpg": {
+    "src": "/images/invitation/long-phung-reu/album-04.jpg",
+    "width": 1080,
+    "height": 1619,
+    "format": "jpeg",
+    "variants": {
+      "thumb": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-04-thumb.webp",
+        "width": 480,
+        "height": 720
+      },
+      "medium": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-04-medium.webp",
+        "width": 900,
+        "height": 1349
+      },
+      "large": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-04-large.webp",
+        "width": 1080,
+        "height": 1619
+      }
+    }
+  },
+  "/images/invitation/long-phung-reu/album-05.jpg": {
+    "src": "/images/invitation/long-phung-reu/album-05.jpg",
+    "width": 1080,
+    "height": 1619,
+    "format": "jpeg",
+    "variants": {
+      "thumb": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-05-thumb.webp",
+        "width": 480,
+        "height": 720
+      },
+      "medium": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-05-medium.webp",
+        "width": 900,
+        "height": 1349
+      },
+      "large": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-05-large.webp",
+        "width": 1080,
+        "height": 1619
+      }
+    }
+  },
+  "/images/invitation/long-phung-reu/album-7.jpeg": {
+    "src": "/images/invitation/long-phung-reu/album-7.jpeg",
+    "width": 1619,
+    "height": 1080,
+    "format": "jpeg",
+    "variants": {
+      "thumb": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-7-thumb.webp",
+        "width": 480,
+        "height": 320
+      },
+      "medium": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-7-medium.webp",
+        "width": 900,
+        "height": 600
+      },
+      "large": {
+        "src": "/images/invitation/long-phung-reu/optimized/album-7-large.webp",
+        "width": 1600,
+        "height": 1067
+      }
+    }
+  },
+  "/images/invitation/long-phung-reu/bride-portrait.png": {
+    "src": "/images/invitation/long-phung-reu/bride-portrait.png",
+    "width": 843,
+    "height": 1264,
+    "format": "png",
+    "variants": {
+      "thumb": {
+        "src": "/images/invitation/long-phung-reu/optimized/bride-portrait-thumb.webp",
+        "width": 480,
+        "height": 720
+      },
+      "medium": {
+        "src": "/images/invitation/long-phung-reu/optimized/bride-portrait-medium.webp",
+        "width": 843,
+        "height": 1264
+      },
+      "large": {
+        "src": "/images/invitation/long-phung-reu/optimized/bride-portrait-large.webp",
+        "width": 843,
+        "height": 1264
+      }
+    }
+  },
+  "/images/invitation/long-phung-reu/groom-portrait.png": {
+    "src": "/images/invitation/long-phung-reu/groom-portrait.png",
+    "width": 843,
+    "height": 1264,
+    "format": "png",
+    "variants": {
+      "thumb": {
+        "src": "/images/invitation/long-phung-reu/optimized/groom-portrait-thumb.webp",
+        "width": 480,
+        "height": 720
+      },
+      "medium": {
+        "src": "/images/invitation/long-phung-reu/optimized/groom-portrait-medium.webp",
+        "width": 843,
+        "height": 1264
+      },
+      "large": {
+        "src": "/images/invitation/long-phung-reu/optimized/groom-portrait-large.webp",
+        "width": 843,
+        "height": 1264
+      }
+    }
+  }
+}
