@@ -20,6 +20,7 @@ type LongPhungReuExperienceProps = {
   invitation: WeddingInvitationTemplate;
   autoOpen?: boolean;
   autoScroll?: boolean;
+  autoScrollSpeed?: number;
 };
 
 const outerPatternStyle = {
@@ -28,7 +29,7 @@ const outerPatternStyle = {
   backgroundSize: "360px"
 };
 
-export function LongPhungReuExperience({ invitation, autoOpen = false, autoScroll = true }: LongPhungReuExperienceProps) {
+export function LongPhungReuExperience({ invitation, autoOpen = false, autoScroll = true, autoScrollSpeed = 0.14 }: LongPhungReuExperienceProps) {
   useResetScrollOnLoad();
 
   const [open, setOpen] = useState(autoOpen);
@@ -80,7 +81,10 @@ export function LongPhungReuExperience({ invitation, autoOpen = false, autoScrol
       audio.loop = true;
       audio.play().catch(() => setMusic(false));
     }
-    window.setTimeout(() => contentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 700);
+    window.setTimeout(() => {
+      document.body.classList.remove("invite-scroll-locked");
+      contentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 700);
     window.setTimeout(() => setCoverVisible(false), 1700);
   };
 
@@ -120,7 +124,7 @@ export function LongPhungReuExperience({ invitation, autoOpen = false, autoScrol
         className={cn("green-template-page relative z-10 mx-auto w-full max-w-[430px] overflow-hidden bg-[var(--lp-surface)] font-[family-name:var(--lp-font)] text-[18px] font-light leading-[27px] transition-opacity duration-700", open ? "opacity-100" : "opacity-70")}
         enabled={autoScroll && open && !coverVisible}
         restartKey={`${open}-${coverVisible}`}
-        speed={0.14}
+        speed={autoScrollSpeed}
         startDelay={350}
       >
         {sections.hero && <LongPhungReuHero invitation={invitation} />}

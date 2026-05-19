@@ -7,8 +7,9 @@ type Props = {
   invitation: WeddingInvitationTemplate;
   autoOpen?: boolean;
   autoScroll?: boolean;
+  autoScrollSpeed?: number;
 };
 
-export function WeddingInvitationExperience({ invitation, autoOpen = false, autoScroll = true }: Props) {
-  return renderInvitationTemplate({ autoOpen, autoScroll, invitation });
+export function WeddingInvitationExperience({ invitation, autoOpen = false, autoScroll = true, autoScrollSpeed }: Props) {
+  return renderInvitationTemplate({ autoOpen, autoScroll, autoScrollSpeed, invitation });
 }

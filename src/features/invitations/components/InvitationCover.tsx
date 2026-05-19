@@ -30,7 +30,7 @@ export function GreenInviteCover({ invitation, open, onOpen }: InvitationCoverPr
   const coverDate = formatCoverDate(invitation.event.startsAt);
 
   return (
-    <section className={cn("invite-cover-stage fixed inset-0 z-50 grid h-[100svh] place-items-center overflow-hidden bg-[#f2eddb] px-4 py-6 text-[#e8d19a]", open && "invite-cover-stage-open")}>
+    <section className={cn("invite-cover-stage fixed inset-0 z-50 grid place-items-center overflow-hidden bg-[#f2eddb] px-4 py-6 text-[#e8d19a]", open && "invite-cover-stage-open")}>
       <div className="absolute inset-0 opacity-[0.08] mix-blend-multiply" style={longPhungCoverPatternStyle} />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(16,42,20,0.08),transparent_34%)]" />
       <FallingDecorations tone="green" />
@@ -39,7 +39,7 @@ export function GreenInviteCover({ invitation, open, onOpen }: InvitationCoverPr
       </div>
       <div
         className={cn(
-          "invite-envelope green-invite-card relative grid h-[640px] max-h-[calc(100svh-48px)] w-[360px] max-w-[calc(100vw-32px)] place-items-center overflow-hidden rounded-lg border border-[#6b7651] bg-[#102a14] px-5 py-8 text-center shadow-[0_34px_120px_rgba(13,42,20,0.28)] transition duration-1000",
+          "invite-envelope green-invite-card relative grid h-[640px] max-h-[calc(100dvh-48px)] w-[360px] max-w-[calc(100vw-32px)] place-items-center overflow-hidden rounded-lg border border-[#6b7651] bg-[#102a14] px-5 py-8 text-center shadow-[0_34px_120px_rgba(13,42,20,0.28)] transition duration-1000",
           open && "invite-envelope-open"
         )}
       >
@@ -93,7 +93,7 @@ export function EnvelopeStage(props: InvitationCoverProps) {
   }
 
   return (
-    <section className={cn("invite-cover-stage fixed inset-0 z-50 grid h-[100svh] place-items-center overflow-hidden px-4 py-10 text-[var(--invite-text)]", props.open && "invite-cover-stage-open")}>
+    <section className={cn("invite-cover-stage fixed inset-0 z-50 grid place-items-center overflow-hidden px-4 py-10 text-[var(--invite-text)]", props.open && "invite-cover-stage-open")}>
       <div className="invite-particles absolute inset-0" />
       <FallingDecorations tone="soft" />
       <div

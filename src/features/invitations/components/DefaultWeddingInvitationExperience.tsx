@@ -45,7 +45,10 @@ export function DefaultWeddingInvitationExperience({ invitation, autoOpen = fals
       audio.loop = true;
       audio.play().catch(() => setMusic(false));
     }
-    window.setTimeout(() => contentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 700);
+    window.setTimeout(() => {
+      document.body.classList.remove("invite-scroll-locked");
+      contentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 700);
     window.setTimeout(() => setCoverVisible(false), 1700);
   };
 

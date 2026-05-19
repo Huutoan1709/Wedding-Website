@@ -16,6 +16,7 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
   const frameRef = useRef<number | null>(null);
   const timerRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
+  const desiredTopRef = useRef<number | null>(null);
   const hasStartedRef = useRef(false);
 
   const stop = useCallback(() => {
@@ -30,6 +31,7 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
     }
 
     lastTimeRef.current = null;
+    desiredTopRef.current = null;
   }, []);
 
   useEffect(() => {
@@ -88,13 +90,16 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
 
       if (lastTimeRef.current === null) {
         lastTimeRef.current = time;
+        desiredTopRef.current = currentTop;
       }
 
       const delta = time - lastTimeRef.current;
       lastTimeRef.current = time;
-      const nextTop = Math.min(bottom, currentTop + delta * speed);
+      const baseTop = desiredTopRef.current ?? currentTop;
+      const nextTop = Math.min(bottom, baseTop + delta * speed);
+      desiredTopRef.current = nextTop;
 
-      window.scrollTo(0, nextTop);
+      scrollingElement.scrollTop = nextTop;
 
       frameRef.current = window.requestAnimationFrame(scrollStep);
     };

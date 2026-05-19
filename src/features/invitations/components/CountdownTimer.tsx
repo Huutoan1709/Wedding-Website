@@ -22,18 +22,21 @@ type CountdownTimerProps = {
 };
 
 const defaultLabels: CountdownLabels = {
-  days: "Ngay",
-  hours: "Gio",
-  minutes: "Phut",
-  seconds: "Giay"
+  days: "Ngày",
+  hours: "Giờ",
+  minutes: "Phút",
+  seconds: "Giây"
 };
 
 export function useCountdown(startsAt: string) {
   const target = useMemo(() => new Date(startsAt).getTime(), [startsAt]);
-  const [remaining, setRemaining] = useState(() => Math.max(0, target - Date.now()));
+  const [remaining, setRemaining] = useState(0);
 
   useEffect(() => {
-    const timer = window.setInterval(() => setRemaining(Math.max(0, target - Date.now())), 1000);
+    const updateRemaining = () => setRemaining(Math.max(0, target - Date.now()));
+
+    updateRemaining();
+    const timer = window.setInterval(updateRemaining, 1000);
     return () => window.clearInterval(timer);
   }, [target]);
 

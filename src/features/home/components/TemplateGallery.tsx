@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Palette } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { WeddingTemplate } from "@/types/wedding";
 import { cn } from "@/lib/utils";
 
@@ -24,104 +24,21 @@ function getCircularOffset(index: number, activeIndex: number, length: number) {
   return forward > length / 2 ? forward - length : forward;
 }
 
-function getPreviewPath(template: WeddingTemplate) {
+function getPreviewPath(template: WeddingTemplate, isActive: boolean) {
   if (!template.demoPath) {
     return "#";
   }
 
-  return `${template.demoPath}?preview=1`;
+  return `${template.demoPath}?preview=1${isActive ? "&scroll=1" : ""}`;
 }
 
-const previewScrollSpeed = 1.15;
-
 function TemplateMiniPreview({ isActive, template }: TemplateMiniPreviewProps) {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const frameRef = useRef<number | null>(null);
-  const lastTimeRef = useRef<number | null>(null);
-  const resetTimerRef = useRef<number | null>(null);
-
-  const stopAutoScroll = useCallback(() => {
-    if (frameRef.current) {
-      window.cancelAnimationFrame(frameRef.current);
-      frameRef.current = null;
-    }
-
-    if (resetTimerRef.current) {
-      window.clearTimeout(resetTimerRef.current);
-      resetTimerRef.current = null;
-    }
-
-    lastTimeRef.current = null;
-  }, []);
-
-  const resetPreview = useCallback(() => {
-    stopAutoScroll();
-    try {
-      iframeRef.current?.contentWindow?.scrollTo({ top: 0, behavior: "auto" });
-    } catch {
-      // Same-origin previews are scrollable; ignore if the browser blocks access.
-    }
-  }, [stopAutoScroll]);
-
-  const startAutoScroll = useCallback(() => {
-    stopAutoScroll();
-
-    const step = (time: number) => {
-      const win = iframeRef.current?.contentWindow;
-      if (!win) return;
-
-      try {
-        const doc = win.document;
-        const scroller = doc.scrollingElement || doc.documentElement;
-        const maxScroll = scroller.scrollHeight - scroller.clientHeight;
-
-        if (scroller.scrollTop >= maxScroll - 4) {
-          resetTimerRef.current = window.setTimeout(() => {
-            win.scrollTo({ top: 0, behavior: "auto" });
-            lastTimeRef.current = null;
-            frameRef.current = window.requestAnimationFrame(step);
-          }, 350);
-          return;
-        }
-
-        if (lastTimeRef.current === null) {
-          lastTimeRef.current = time;
-        }
-
-        const delta = time - lastTimeRef.current;
-        lastTimeRef.current = time;
-        scroller.scrollTop = Math.min(maxScroll, scroller.scrollTop + delta * previewScrollSpeed);
-        frameRef.current = window.requestAnimationFrame(step);
-      } catch {
-        stopAutoScroll();
-      }
-    };
-
-    frameRef.current = window.requestAnimationFrame(step);
-  }, [stopAutoScroll]);
-
-  useEffect(() => {
-    if (isActive) {
-      startAutoScroll();
-    } else {
-      resetPreview();
-    }
-
-    return stopAutoScroll;
-  }, [isActive, resetPreview, startAutoScroll, stopAutoScroll]);
-
   return (
     <div className="relative h-full overflow-hidden rounded-[20px] bg-[#15151f] md:rounded-[22px]">
       <iframe
         aria-label={`Xem trước mẫu ${template.name}`}
         className="pointer-events-none absolute left-1/2 top-0 h-[1100px] w-[430px] origin-top -translate-x-1/2 scale-[0.465] border-0 md:scale-[0.526]"
-        onLoad={() => {
-          if (isActive) {
-            startAutoScroll();
-          }
-        }}
-        ref={iframeRef}
-        src={getPreviewPath(template)}
+        src={getPreviewPath(template, isActive)}
         tabIndex={-1}
         title={`Xem trước ${template.name}`}
       />
@@ -129,7 +46,6 @@ function TemplateMiniPreview({ isActive, template }: TemplateMiniPreviewProps) {
     </div>
   );
 }
-
 const slidePositions = {
   [-2]: {
     className: "opacity-35 blur-[0.4px]",

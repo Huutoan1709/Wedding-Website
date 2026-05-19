@@ -176,8 +176,16 @@ a {
   font-family: var(--invite-body-font);
 }
 
+html:has(body.invite-scroll-locked),
 body.invite-scroll-locked {
   overflow: hidden;
+}
+
+body.invite-scroll-locked {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  overscroll-behavior: none;
 }
 
 .invite-floating-hy {
@@ -252,7 +260,7 @@ body.invite-scroll-locked {
 
 .green-invite-card::before,
 .green-invite-card::after {
-  content: "";
+  content: none;
   position: absolute;
   inset: 18px;
   pointer-events: none;
@@ -589,6 +597,11 @@ body.invite-scroll-locked {
 }
 
 .invite-cover-stage {
+  height: 100vh;
+  min-height: 100vh;
+  height: 100dvh;
+  min-height: 100dvh;
+  width: 100vw;
   transition:
     opacity 0.55s ease 1.05s,
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.95s;

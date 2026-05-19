@@ -10,13 +10,16 @@ export const metadata: Metadata = {
 type LongPhungReuDemoPageProps = {
   searchParams?: Promise<{
     preview?: string;
+    scroll?: string;
   }>;
 };
 
 export default async function LongPhungReuDemoPage({ searchParams }: LongPhungReuDemoPageProps) {
   const params = await searchParams;
   const autoOpen = params?.preview === "1";
-  const autoScroll = params?.preview !== "1";
+  const isPreview = params?.preview === "1";
+  const autoScroll = !isPreview || params?.scroll === "1";
+  const autoScrollSpeed = isPreview ? 1 : undefined;
 
-  return <LongPhungReuInvitation autoOpen={autoOpen} autoScroll={autoScroll} invitation={longPhungReuInvitation} />;
+  return <LongPhungReuInvitation autoOpen={autoOpen} autoScroll={autoScroll} autoScrollSpeed={autoScrollSpeed} invitation={longPhungReuInvitation} />;
 }
