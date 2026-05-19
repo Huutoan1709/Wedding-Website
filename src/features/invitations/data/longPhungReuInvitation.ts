@@ -75,14 +75,14 @@ export const longPhungReuInvitation: LongPhungReuInvitationData = {
     name: "Tố Yên",
     parents: "Ông Nguyễn Minh An & Bà Lê Thị Thu Hà",
     address: "78 Đào Duy Từ, Phường Đập Đá, Thị xã An Nhơn, Tỉnh Bình Định",
-    portrait: "/images/invitation/long-phung-reu/bride-portrait.jpg"
+    portrait: "/images/invitation/long-phung-reu/bride-portrait.png"
   },
   groom: {
     role: "Trưởng nam / Groom",
     name: "Hữu Toàn",
     parents: "Ông Nguyễn Văn Dũng & Bà Nguyễn Thị Bích Hạnh",
     address: "32 Võ Trứ, Phường Nhơn Thành, Thị xã An Nhơn, Tỉnh Bình Định",
-    portrait: "/images/invitation/long-phung-reu/groom-portrait.jpg"
+    portrait: "/images/invitation/long-phung-reu/groom-portrait.png"
   },
   guestName: "Anh Chị Minh - Thanh",
   weddingDate: "30 tháng 5, 2026",

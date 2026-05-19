@@ -1,7 +1,15 @@
 ﻿@import "tailwindcss";
 
+@font-face {
+  font-family: "UNI Chu Truyen Thong";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/UNI-Chu-Truyen-Thong.ttf") format("truetype");
+}
+
 :root {
-  --font-sans: "Segoe UI", Arial, Helvetica, sans-serif, "UNI Chu truyen thong";
+  --font-sans: "Segoe UI", Arial, Helvetica, sans-serif;
   --font-display: Georgia, "Times New Roman", serif;
   --background: #fff7f7;
   --foreground: #151111;
@@ -139,13 +147,13 @@ a {
 }
 
 .invite-page {
-  --invite-script-font: "UNI chu truyen thong", "Brush Script MT", "Segoe Script", "Lucida Handwriting", cursive;
+  --invite-script-font: Georgia, "Times New Roman", serif;
   --invite-heading-font: Lora, Georgia, "Times New Roman", serif;
   --invite-body-font: Lora, Georgia, "Times New Roman", serif;
 }
 
 .green-template-page {
-  --invite-script-font: "UNI Chu Truyen Thong", "UNI Chu truyen thong", "UNI chu truyen thong", "Times New Roman", serif;
+  --invite-script-font: "UNI Chu Truyen Thong", Georgia, "Times New Roman", serif;
   --invite-heading-font: "Times New Roman", Times, serif;
   --invite-body-font: "Times New Roman", Times, serif;
   font-family: var(--invite-body-font);
@@ -298,7 +306,7 @@ body.invite-scroll-locked {
 }
 
 .green-couple-names {
-  font-family: "UNI Chu Truyen Thong", "UNI Chu truyen thong", "UNI chu truyen thong", "Times New Roman", serif;
+  font-family: "UNI Chu Truyen Thong", Georgia, "Times New Roman", serif;
   font-weight: 400;
   letter-spacing: 0;
 }
@@ -464,7 +472,7 @@ body.invite-scroll-locked {
 }
 
 .green-married-title {
-  font-family: "UNI Chu Truyen Thong", "UNI Chu truyen thong", "UNI chu truyen thong", "Brush Script MT", "Segoe Script", cursive;
+  font-family: "UNI Chu Truyen Thong", Georgia, "Times New Roman", serif;
   font-weight: 400;
   letter-spacing: 0;
   text-shadow: 0 12px 38px rgba(0, 0, 0, 0.5);
@@ -907,3 +915,4 @@ body.invite-scroll-locked {
     transition-duration: 0.01ms !important;
   }
 }
+

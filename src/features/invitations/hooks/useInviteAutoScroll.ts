@@ -17,7 +17,6 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
   const timerRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
   const hasStartedRef = useRef(false);
-  const programmaticScrollRef = useRef(false);
 
   const stop = useCallback(() => {
     if (timerRef.current !== null) {
@@ -65,30 +64,16 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
   }, [stop]);
 
   useEffect(() => {
-    if (!enabled) return;
-
-    const pauseFromUserIntent = () => {
-      if (!programmaticScrollRef.current && !blocked && !externallyBlocked) {
-        setPaused(true);
-      }
-    };
-
-    window.addEventListener("touchmove", pauseFromUserIntent, { passive: true });
-    window.addEventListener("wheel", pauseFromUserIntent, { passive: true });
-
-    return () => {
-      window.removeEventListener("touchmove", pauseFromUserIntent);
-      window.removeEventListener("wheel", pauseFromUserIntent);
-    };
-  }, [blocked, enabled, externallyBlocked]);
-
-  useEffect(() => {
     const shouldRun = enabled && !paused && !blocked && !externallyBlocked && !document.hidden;
 
     if (!shouldRun) {
       stop();
       return;
     }
+
+    const html = document.documentElement;
+    const previousScrollBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";
 
     const scrollStep = (time: number) => {
       const scrollingElement = document.scrollingElement || document.documentElement;
@@ -109,11 +94,7 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
       lastTimeRef.current = time;
       const nextTop = Math.min(bottom, currentTop + delta * speed);
 
-      programmaticScrollRef.current = true;
       window.scrollTo(0, nextTop);
-      window.setTimeout(() => {
-        programmaticScrollRef.current = false;
-      }, 0);
 
       frameRef.current = window.requestAnimationFrame(scrollStep);
     };
@@ -125,7 +106,10 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
       frameRef.current = window.requestAnimationFrame(scrollStep);
     }, delay);
 
-    return stop;
+    return () => {
+      html.style.scrollBehavior = previousScrollBehavior;
+      stop();
+    };
   }, [blocked, enabled, externallyBlocked, paused, speed, startDelay, stop]);
 
   return {

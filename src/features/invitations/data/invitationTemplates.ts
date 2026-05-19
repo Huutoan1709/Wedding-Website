@@ -90,7 +90,7 @@ const commonBride: InvitationPerson = {
     mother: "Bà Lê Thu Hà",
     address: "Quận 7, TP. Hồ Chí Minh"
   },
-  portrait: "/images/invitation/long-phung-reu/bride-portrait.jpg"
+  portrait: "/images/invitation/long-phung-reu/bride-portrait.png"
 };
 
 const commonGroom: InvitationPerson = {
@@ -101,7 +101,7 @@ const commonGroom: InvitationPerson = {
     mother: "Bà Phạm Ngọc Lan",
     address: "Quận 1, TP. Hồ Chí Minh"
   },
-  portrait: "/images/invitation/long-phung-reu/groom-portrait.jpeg"
+  portrait: "/images/invitation/long-phung-reu/groom-portrait.png"
 };
 
 const baseEvent: InvitationEvent = {
@@ -115,7 +115,7 @@ const baseEvent: InvitationEvent = {
 const baseAlbum = [
   "/images/invitation/long-phung-reu/album-01.jpg",
   "/images/invitation/long-phung-reu/album-02.jpg",
-  "/images/invitation/long-phung-reu/bride-portrait.jpg",
+  "/images/invitation/long-phung-reu/bride-portrait.png",
   "/images/invitation/long-phung-reu/album-04.jpg"
 ];
 
