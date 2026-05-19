@@ -77,6 +77,13 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
     const previousScrollBehavior = html.style.scrollBehavior;
     html.style.scrollBehavior = "auto";
 
+    const preventManualScroll = (event: Event) => {
+      event.preventDefault();
+    };
+
+    window.addEventListener("wheel", preventManualScroll, { passive: false });
+    window.addEventListener("touchmove", preventManualScroll, { passive: false });
+
     const scrollStep = (time: number) => {
       const scrollingElement = document.scrollingElement || document.documentElement;
       const bottom = scrollingElement.scrollHeight - window.innerHeight;
@@ -113,12 +120,17 @@ export function useInviteAutoScroll({ enabled, blocked = false, restartKey, spee
 
     return () => {
       html.style.scrollBehavior = previousScrollBehavior;
+      window.removeEventListener("wheel", preventManualScroll);
+      window.removeEventListener("touchmove", preventManualScroll);
       stop();
     };
   }, [blocked, enabled, externallyBlocked, paused, speed, startDelay, stop]);
 
+  const running = enabled && !paused && !blocked && !externallyBlocked;
+
   return {
     paused,
+    running,
     toggleAutoScroll: () => {
       if (enabled && !blocked && !externallyBlocked) {
         setPaused((current) => !current);

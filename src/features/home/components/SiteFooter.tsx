@@ -1,3 +1,4 @@
+import { MessageCircle, Send } from "lucide-react";
 import { BrandLogo } from "@/features/home/components/BrandLogo";
 import { siteConfig } from "@/config/site";
 
@@ -10,6 +11,16 @@ export function SiteFooter() {
           <p className="mt-3 max-w-sm text-sm leading-6 text-white/62">
             Thiệp cưới online theo mẫu cố định, thay thông tin theo từng cặp đôi và xuất link riêng để chia sẻ cho khách mời.
           </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <a className="inline-flex h-10 items-center gap-2 rounded-full bg-white px-4 text-sm font-bold text-[#15151f]" href={siteConfig.zaloUrl} rel="noreferrer" target="_blank">
+              <MessageCircle size={16} />
+              Zalo
+            </a>
+            <a className="inline-flex h-10 items-center gap-2 rounded-full bg-white/10 px-4 text-sm font-bold text-white ring-1 ring-white/14" href={siteConfig.messengerUrl} rel="noreferrer" target="_blank">
+              <Send size={16} />
+              Messenger
+            </a>
+          </div>
         </div>
         <div className="grid gap-4 text-sm text-white/70 sm:grid-cols-3">
           {["Mẫu thiệp có sẵn", "Link riêng cho khách", siteConfig.contactEmail].map((item) => (

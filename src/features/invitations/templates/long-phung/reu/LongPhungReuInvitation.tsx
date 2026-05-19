@@ -7,6 +7,7 @@ type LongPhungReuInvitationProps = {
   invitation?: LongPhungReuInvitationData;
   autoOpen?: boolean;
   autoScroll?: boolean;
+  autoScrollControls?: boolean;
   autoScrollSpeed?: number;
 };
 
@@ -76,8 +77,8 @@ function createCustomerTemplate(invitation?: LongPhungReuInvitationData): Weddin
   };
 }
 
-export function LongPhungReuInvitation({ invitation, autoOpen = false, autoScroll = true, autoScrollSpeed }: LongPhungReuInvitationProps) {
+export function LongPhungReuInvitation({ invitation, autoOpen = false, autoScroll = true, autoScrollControls = true, autoScrollSpeed }: LongPhungReuInvitationProps) {
   const template = createCustomerTemplate(invitation);
 
-  return <WeddingInvitationExperience autoOpen={autoOpen} autoScroll={autoScroll} autoScrollSpeed={autoScrollSpeed} invitation={template} />;
+  return <WeddingInvitationExperience autoOpen={autoOpen} autoScroll={autoScroll} autoScrollControls={autoScrollControls} autoScrollSpeed={autoScrollSpeed} invitation={template} />;
 }

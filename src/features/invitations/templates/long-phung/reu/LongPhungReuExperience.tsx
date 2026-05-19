@@ -20,6 +20,7 @@ type LongPhungReuExperienceProps = {
   invitation: WeddingInvitationTemplate;
   autoOpen?: boolean;
   autoScroll?: boolean;
+  autoScrollControls?: boolean;
   autoScrollSpeed?: number;
 };
 
@@ -29,7 +30,7 @@ const outerPatternStyle = {
   backgroundSize: "360px"
 };
 
-export function LongPhungReuExperience({ invitation, autoOpen = false, autoScroll = true, autoScrollSpeed = 0.14 }: LongPhungReuExperienceProps) {
+export function LongPhungReuExperience({ invitation, autoOpen = false, autoScroll = true, autoScrollControls = true, autoScrollSpeed = 0.14 }: LongPhungReuExperienceProps) {
   useResetScrollOnLoad();
 
   const [open, setOpen] = useState(autoOpen);
@@ -124,6 +125,7 @@ export function LongPhungReuExperience({ invitation, autoOpen = false, autoScrol
         className={cn("green-template-page relative z-10 mx-auto w-full max-w-[430px] overflow-hidden bg-[var(--lp-surface)] font-[family-name:var(--lp-font)] text-[18px] font-light leading-[27px] transition-opacity duration-700", open ? "opacity-100" : "opacity-70")}
         enabled={autoScroll && open && !coverVisible}
         restartKey={`${open}-${coverVisible}`}
+        showControl={autoScrollControls}
         speed={autoScrollSpeed}
         startDelay={350}
       >

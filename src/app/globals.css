@@ -181,6 +181,12 @@ body.invite-scroll-locked {
   overflow: hidden;
 }
 
+html.modal-scroll-locked,
+body.modal-scroll-locked {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 body.invite-scroll-locked {
   position: fixed;
   inset: 0;

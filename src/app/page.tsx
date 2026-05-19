@@ -1,4 +1,5 @@
 ﻿import { FAQSection } from "@/features/home/components/FAQSection";
+import { FloatingContactButtons } from "@/features/home/components/FloatingContactButtons";
 import { HeroSection } from "@/features/home/components/HeroSection";
 import { SiteFooter } from "@/features/home/components/SiteFooter";
 import { SiteHeader } from "@/features/home/components/SiteHeader";
@@ -20,6 +21,7 @@ export default function Home() {
         <FAQSection />
       </main>
       <SiteFooter />
+      <FloatingContactButtons />
       <VoucherModal />
     </>
   );

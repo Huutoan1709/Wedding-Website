@@ -19,7 +19,8 @@ export default async function LongPhungReuDemoPage({ searchParams }: LongPhungRe
   const autoOpen = params?.preview === "1";
   const isPreview = params?.preview === "1";
   const autoScroll = !isPreview || params?.scroll === "1";
+  const autoScrollControls = !isPreview;
   const autoScrollSpeed = isPreview ? 1 : undefined;
 
-  return <LongPhungReuInvitation autoOpen={autoOpen} autoScroll={autoScroll} autoScrollSpeed={autoScrollSpeed} invitation={longPhungReuInvitation} />;
+  return <LongPhungReuInvitation autoOpen={autoOpen} autoScroll={autoScroll} autoScrollControls={autoScrollControls} autoScrollSpeed={autoScrollSpeed} invitation={longPhungReuInvitation} />;
 }

@@ -14,5 +14,6 @@ export type InvitationTemplateProps = {
   invitation: import("@/features/invitations/data/invitationTemplates").WeddingInvitationTemplate;
   autoOpen?: boolean;
   autoScroll?: boolean;
+  autoScrollControls?: boolean;
   autoScrollSpeed?: number;
 };
